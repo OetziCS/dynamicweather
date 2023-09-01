@@ -22,3 +22,6 @@ Roblox Game
 
 If you need more help setting up the Roblox Side of this project, please read this Help Site.
 
+## Weather Types
+
+There are some different weather Types your GET Request can return. Here, we will list those Types. If you don't wont to script anything for one of these types for whatever reasons, we recommend to make ```or``` Statements in your code, like ```ìf Weather == "Storm" or Weather == "Heavy Storm"```.
