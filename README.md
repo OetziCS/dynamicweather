@@ -35,7 +35,7 @@ Main Tpyes:
 * Clear
 * Clouds
 
-See all types + the returning JSOn Format here: https://openweathermap.org/weather-conditions
+See all types + the returning JSON Format here: https://openweathermap.org/weather-conditions
 
 ## Why using this complicated Method when I can just acces the API directly in the Game
 
