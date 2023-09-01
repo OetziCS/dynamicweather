@@ -24,11 +24,19 @@ If you need more help setting up the Roblox Side of this project, please read th
 
 ## Weather Types
 
-There are some different weather Types your GET Request can return. Here, we will list those Types. If you don't wont to script anything for one of these types for whatever reasons, we recommend to make ```or``` Statements in your code, like ```ìf Weather == "Storm" or Weather == "Heavy Storm"```.
+There are some different weather Types your GET Request can return. Here, we will list those Types in a JSON Format (JSON Format below). If you don't want to script anything for every one of the ID's provided for whatever reasons, we recommend to make use of the ```Main``` Table Row in your code, like ```ìf Weather.Main == "Storm" then```.
 
+Main Tpyes:
+* Thunderstorm
+* Drizzle
+* Rain
+* Snow
+* Atmosphere
+* Clear
+* Clouds
 
+See all types + the returning JSOn Format here: https://openweathermap.org/weather-conditions
 
 ## Why using this complicated Method when I can just acces the API directly in the Game
 
 As your Game grows, the number of Game Instances will grow, meaning there will be more API Request to the OpenWeatherAPI. If you pass the API Request limit for the free plan, you'll have to pay some money in order to function well. With this you'll only have to pay 2$ or less (depends on your Server). You can even make a Server for free (e.g. on Repl, Oracle or other platforms that offer free tiers). 
-
