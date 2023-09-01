@@ -1,6 +1,6 @@
 # Dynamicweather
 
-This is the server side code of my Dynamic Weather System interacting with the OpenWeatherMap API to regulate paying for this API. You'll have to code the weathers for yourself, as I don't want to OpenSource them. You can see how many Weather Types there are below.
+This is the server side code of my Dynamic Weather System interacting with the OpenWeatherMap API to regulate paying for this API. You'll have to code the weathers for yourself, as I don't want to OpenSource them. You can see how many Main Weather Types there are below.
 
 ## Setting-Up
 
@@ -26,7 +26,7 @@ If you need more help setting up the Roblox Side of this project, please read th
 
 There are some different weather Types your GET Request can return. Here, we will list those Types in a JSON Format (JSON Format below). If you don't want to script anything for every one of the ID's provided for whatever reasons, we recommend to make use of the ```Main``` Table Row in your code, like ```ìf Weather.Main == "Storm" then```.
 
-Main Tpyes:
+Main Types:
 * Thunderstorm
 * Drizzle
 * Rain
