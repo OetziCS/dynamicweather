@@ -8,7 +8,7 @@ Your Server
 1. Purchase a Server
 2. Purchase a Domain that you can use for HTTP GET Requests
 3. Clone this repro onto your Server
-4. Insert your Weather Region
+4. Insert your Weather Region (latitude, longitude)
 
 OpenWeather API
 1. Go to https://openweathermap.org/api and create your API Key
