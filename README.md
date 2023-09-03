@@ -24,7 +24,7 @@ If you need more help setting up the Roblox Side of this project, please read th
 
 ## Weather Types
 
-There are some different weather Types your GET Request can return. Here, we will list those Types in a JSON Format (JSON Format below). If you don't want to script anything for every one of the ID's provided for whatever reasons, we recommend to make use of the ```Main``` Table Row in your code, like ```ìf Weather.Main == "Storm" then```.
+There are some different weather Types your GET Request can return. Here, we will list those Types in a JSON Format (JSON Format below). If you don't want to script anything for every one of the ID's provided for whatever reasons, we recommend to make use of the ```main``` Table Row in your code, like ```ìf Weather.main == "Clouds" then```.
 
 Main Types:
 * Thunderstorm
