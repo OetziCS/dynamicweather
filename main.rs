@@ -17,7 +17,7 @@ async fn main() -> io::Result<()> {
            
 
         })
-    .bind("0.0.0.0:9090")?
+    .bind("0.0.0.0:9050")?
     .run()
     .await
 }
