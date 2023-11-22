@@ -23,7 +23,8 @@ This is the server-side code for my Dynamic Weather System that interacts with t
 2. Make an HTTP GET request to your server that you have set up above.
 3. Code your different weather "types." Remember that the HTTP request returns a string, like "Rain."
 
-If you need more help setting up the Roblox side of this project, please read this [Help Site](#).
+> [!NOTE]
+> If you need more help setting up the Roblox side of this project, please read this [Help Site](#).
 
 ## Weather Types
 
