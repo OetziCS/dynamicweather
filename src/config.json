@@ -1,6 +1,6 @@
 {
    "latitude": 12,
    "longtitude": 2,
-   "api-key": "",
+   "api_key": "",
    "weathercheckinterval": 2 
 }
