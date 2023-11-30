@@ -1,6 +1,16 @@
 use reqwest::blocking::Client;
+use serde::Deserialize;
+use std::fs;
 use std::thread;
 use std::time::Duration;
+
+// structure config
+struct Config {
+   latitude: f64,
+   longtitude: f64,
+   api_key: String,
+   weathercheckinterval: f64,
+}
 
 async fn get_weather(api_key: &str, lat: f64, lon: f64) -> Result<(), reqwest::Error> {
     let url = format!(
@@ -19,15 +29,14 @@ async fn get_weather(api_key: &str, lat: f64, lon: f64) -> Result<(), reqwest::E
 
 #[tokio::main]
 async fn main() {
-    let api_key = "YOUR_OPENWEATHERMAP_API_KEY";
-    let lat = 000.000; // latitude
-    let lon = 000.000; // longitude
+    let config_content = fs::read_to_string("config.json").expect("Unable to read config.json");
+    let config: Config = serde_json::from_str(&config_content).expect("Error parsing config.json");
 
     // Specify the interval in seconds
-    let interval_seconds = 60 * 5; // 5 minutes
+    let interval_seconds = 60 * &config.weathercheckinterval; // 5 minutes
 
     loop {
-        match get_weather(api_key, lat, lon).await {
+        match get_weather(&config.api_key, config.latitude, config.longitude).await {
             Ok(_) => println!("Weather data fetched successfully."),
             Err(err) => eprintln!("Error fetching weather data: {:?}", err),
         }
