@@ -14,7 +14,7 @@ struct Config {
 
 async fn get_weather(api_key: &str, lat: f64, lon: f64) -> Result<(), reqwest::Error> {
     let url = format!(
-        "http://api.openweathermap.org/data/2.5/weather?lat={}&lon={}&appid={}",
+        "https://api.openweathermap.org/data/3.0/onecall?lat={}&lon={}&exclude={alerts,daily}&appid={}",
         lat, lon, api_key
     );
 
