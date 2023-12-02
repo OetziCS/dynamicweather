@@ -1,6 +1,9 @@
 # Dynamicweather
 
-This is the server-side code for my Dynamic Weather System that interacts with the OpenWeatherMap API to regulate payment for their API. You'll have to code the weathers for yourself since I don't want to open-source them. You can see how many Main Weather Types there are below.
+This is the server-side code for my Dynamic Weather System that interacts with the OpenWeatherMap API to regulate payment for their API. 
+
+> [!NOTE]
+> You'll need to independently implement the weather features, including skies, lightning, etc., as I prefer not to make them open source. The different Main Weather Types are listed below for your reference.
 
 ## Setting Up
 
