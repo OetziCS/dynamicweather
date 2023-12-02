@@ -7,7 +7,7 @@ use std::time::Duration;
 // structure config
 struct Config {
    latitude: f64,
-   longtitude: f64,
+   longitude: f64,
    api_key: String,
    weathercheckinterval: f64,
 }
@@ -33,7 +33,7 @@ async fn main() {
     let config: Config = serde_json::from_str(&config_content).expect("Error parsing config.json");
 
     // Specify the interval in seconds
-    let interval_seconds = 60 * &config.weathercheckinterval; // 5 minutes
+    let interval_duration = Duration::from_secs_f64(config.weathercheckinterval * 60.0); // Convert minutes to seconds
 
     loop {
         match get_weather(&config.api_key, config.latitude, config.longitude).await {
@@ -42,6 +42,6 @@ async fn main() {
         }
 
         // Sleep for the specified interval
-        thread::sleep(Duration::from_secs(interval_seconds as u64));
+        thread::sleep(interval_duration);
     }
 }
