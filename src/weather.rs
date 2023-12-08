@@ -4,12 +4,19 @@ use std::fs;
 use std::thread;
 use std::time::Duration;
 
+// structure weather information
+struct WeatherInfo {
+    main: String,
+    description: String,
+}
+
 // structure config
 struct Config {
    latitude: f64,
    longitude: f64,
    api_key: String,
-   weathercheckinterval: f64,
+   weather_check_interval: f64,
+   output_file: String,
 }
 
 async fn get_weather(api_key: &str, lat: f64, lon: f64) -> Result<(), reqwest::Error> {
@@ -21,11 +28,46 @@ async fn get_weather(api_key: &str, lat: f64, lon: f64) -> Result<(), reqwest::E
     let response = reqwest::get(&url).await?;
     let weather_data: serde_json::Value = response.json().await?;
 
-    // Parse and use the weather_data as needed
-    println!("{:#?}", weather_data);
+    // Extract weather information
+    let weather_info = WeatherInfo {
+        main: weather_data["current"]["weather"][0]["main"]
+            .as_str()
+            .unwrap_or_default()
+            .to_string(),
+        description: weather_data["current"]["weather"][0]["description"]
+            .as_str()
+            .unwrap_or_default()
+            .to_string(),
+    };
+
+    // (Print and) write weather information to the specified file
+    //println!("{:#?}", weather_info);
+    write_weather_info(&weather_info);
 
     Ok(())
 }
+
+// Function to write weather information to the specified file
+fn write_weather_info(weather_info: &WeatherInfo) {
+    let output_file_path = "weather_info.txt"; // Change this later!
+
+    // Create or open the file for writing
+    let mut file = fs::OpenOptions::new()
+        .create(true)
+        .write(true)
+        .append(true)
+        .open(output_file_path)
+        .expect("Error opening or creating the output file");
+
+    // Write weather information to the file
+    writeln!(
+        file,
+        "Weather Main: {}, Weather Description: {}",
+        weather_info.main, weather_info.description
+    )
+    .expect("Error writing to the output file");
+}
+
 
 #[tokio::main]
 async fn main() {
@@ -33,7 +75,7 @@ async fn main() {
     let config: Config = serde_json::from_str(&config_content).expect("Error parsing config.json");
 
     // Specify the interval in seconds
-    let interval_duration = Duration::from_secs_f64(config.weathercheckinterval * 60.0); // Convert minutes to seconds
+    let interval_duration = Duration::from_secs_f64(config.weather_check_interval * 60.0); // Convert minutes to seconds
 
     loop {
         match get_weather(&config.api_key, config.latitude, config.longitude).await {
