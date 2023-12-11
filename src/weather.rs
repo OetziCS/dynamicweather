@@ -6,9 +6,9 @@ use std::thread;
 use std::time::Duration;
 
 // structure weather information
-struct WeatherInfo {
-    main: String,
-    description: String,
+pub struct WeatherInfo {
+    pub main: String,
+    pub description: String,
 }
 
 // structure config
@@ -20,8 +20,14 @@ struct Config {
    output_file: String,
 }
 
-static WEATHER_INFO: Lazy<Arc<Mutex<Option<WeatherInfo>>>> = Lazy::new(|| Arc::new(Mutex::new(None)));
+pub static WEATHER_INFO: Lazy<Arc<Mutex<Option<WeatherInfo>>>> = Lazy::new(|| Arc::new(Mutex::new(None)));
 
+// Function to retrieve the weather information
+pub fn get_current_weather() -> Option<WeatherInfo> {
+    WEATHER_INFO.lock().unwrap().clone()
+}
+
+// Function to fetch the API
 async fn get_weather(api_key: &str, lat: f64, lon: f64) -> Result<(), reqwest::Error> {
     let url = format!(
         "https://api.openweathermap.org/data/3.0/onecall?lat={}&lon={}&exclude={alerts,daily}&appid={}",
@@ -55,7 +61,6 @@ async fn main() {
     let config_content = fs::read_to_string("config.json").expect("Unable to read config.json");
     let config: Config = serde_json::from_str(&config_content).expect("Error parsing config.json");
 
-    // Specify the interval in seconds
     let interval_duration = Duration::from_secs_f64(config.weather_check_interval * 60.0); // Convert minutes to seconds
 
     loop {
