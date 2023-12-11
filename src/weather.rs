@@ -1,5 +1,6 @@
 use reqwest::blocking::Client;
 use serde::Deserialize;
+use std::sync::{Arc, Mutex};
 use std::fs;
 use std::thread;
 use std::time::Duration;
@@ -18,6 +19,8 @@ struct Config {
    weather_check_interval: f64,
    output_file: String,
 }
+
+static WEATHER_INFO: Lazy<Arc<Mutex<Option<WeatherInfo>>>> = Lazy::new(|| Arc::new(Mutex::new(None)));
 
 async fn get_weather(api_key: &str, lat: f64, lon: f64) -> Result<(), reqwest::Error> {
     let url = format!(
@@ -42,32 +45,10 @@ async fn get_weather(api_key: &str, lat: f64, lon: f64) -> Result<(), reqwest::E
 
     // (Print and) write weather information to the specified file
     //println!("{:#?}", weather_info);
-    write_weather_info(&weather_info);
+    *WEATHER_INFO.lock().unwrap() = Some(weather_info);
 
     Ok(())
 }
-
-// Function to write weather information to the specified file
-fn write_weather_info(weather_info: &WeatherInfo) {
-    let output_file_path = "weather_info.txt"; // Change this later!
-
-    // Create or open the file for writing
-    let mut file = fs::OpenOptions::new()
-        .create(true)
-        .write(true)
-        .append(true)
-        .open(output_file_path)
-        .expect("Error opening or creating the output file");
-
-    // Write weather information to the file
-    writeln!(
-        file,
-        "Weather Main: {}, Weather Description: {}",
-        weather_info.main, weather_info.description
-    )
-    .expect("Error writing to the output file");
-}
-
 
 #[tokio::main]
 async fn main() {
