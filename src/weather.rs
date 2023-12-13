@@ -31,7 +31,6 @@ pub fn get_current_weather() -> Option<WeatherInfo> {
 }
 
 // Function to fetch the API
-#[derive(Deserialize)]
 async fn get_weather(api_key: &str, lat: f64, lon: f64) -> Result<(), reqwest::Error> {
     let url = format!(
         "https://api.openweathermap.org/data/3.0/onecall?lat={}&lon={}&exclude={alerts,daily}&appid={}",
