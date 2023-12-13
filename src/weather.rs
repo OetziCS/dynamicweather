@@ -13,6 +13,7 @@ pub struct WeatherInfo {
 }
 
 // structure config
+#[derive(Deserialize)]
 struct Config {
    latitude: f64,
    longitude: f64,
@@ -21,7 +22,8 @@ struct Config {
    output_file: String,
 }
 
-pub static WEATHER_INFO: Lazy<Arc<Mutex<Option<WeatherInfo>>>> = Lazy::new(|| Arc::new(Mutex::new(None)));
+static WEATHER_INFO: once_cell::sync::Lazy<std::sync::Mutex<Option<WeatherInfo>>> =
+    once_cell::sync::Lazy::new(|| std::sync::Mutex::new(None));
 
 // Function to retrieve the weather information
 pub fn get_current_weather() -> Option<WeatherInfo> {
