@@ -33,12 +33,12 @@ pub fn get_current_weather() -> Option<WeatherInfo> {
 // Function to fetch the API
 async fn get_weather(api_key: &str, lat: f64, lon: f64) -> Result<(), reqwest::Error> {
     let url = format!(
-        "https://api.openweathermap.org/data/3.0/onecall?lat={}&lon={}&exclude={alerts,daily}&appid={}",
+        "https://api.openweathermap.org/data/3.0/onecall?lat={}&lon={}&exclude={alerts}&appid={}",
         lat, lon, api_key
     );
 
     let response = reqwest::get(&url).await?;
-    let weather_data: serde_json::Value = response.json().await?;
+    let weather_data: serde_json::Value = response.json::<serde_json::Value>().await?;
 
     // Extract weather information
     let weather_info = WeatherInfo {
