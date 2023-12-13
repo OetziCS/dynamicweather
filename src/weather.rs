@@ -7,6 +7,7 @@ use std::thread;
 use std::time::Duration;
 
 // structure weather information
+#[derive(Debug, Deserialize, Clone)]
 pub struct WeatherInfo {
     pub main: String,
     pub description: String,
@@ -22,8 +23,7 @@ struct Config {
    output_file: String,
 }
 
-static WEATHER_INFO: once_cell::sync::Lazy<std::sync::Mutex<Option<WeatherInfo>>> =
-    once_cell::sync::Lazy::new(|| std::sync::Mutex::new(None));
+pub static WEATHER_INFO: Lazy<Arc<Mutex<Option<WeatherInfo>>>> = Lazy::new(|| Arc::new(Mutex::new(None)));
 
 // Function to retrieve the weather information
 pub fn get_current_weather() -> Option<WeatherInfo> {
@@ -31,6 +31,7 @@ pub fn get_current_weather() -> Option<WeatherInfo> {
 }
 
 // Function to fetch the API
+#[derive(Deserialize)]
 async fn get_weather(api_key: &str, lat: f64, lon: f64) -> Result<(), reqwest::Error> {
     let url = format!(
         "https://api.openweathermap.org/data/3.0/onecall?lat={}&lon={}&exclude={alerts,daily}&appid={}",
