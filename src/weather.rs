@@ -39,7 +39,7 @@ async fn get_weather(api_key: &str, lat: f64, lon: f64) -> Result<(), reqwest::E
 
     let response = reqwest::get(url).await?;
     let weather_data_1 = response.text().await?;
-    let weather_data = serde_json::from_str(&weather_data_1)?;
+    let weather_data: serde_json::Value = serde_json::from_str(&weather_data_1)?;
 
     // Extract weather information
     let weather_info = WeatherInfo {
