@@ -1,5 +1,6 @@
 use reqwest::blocking::Client;
 use serde::Deserialize;
+use serde_json::Value;
 use once_cell::sync::Lazy;
 use std::sync::{Arc, Mutex};
 use std::fs;
@@ -68,7 +69,7 @@ async fn main() {
     let interval_duration = Duration::from_secs_f64(config.weather_check_interval * 60.0); // Convert minutes to seconds
 
     loop {
-        get_weather(&config.api_key, config.latitude, config.longitude).await
+        get_weather(&config.api_key, config.latitude, config.longitude).await;
 
         // Sleep for the specified interval
         thread::sleep(interval_duration);
