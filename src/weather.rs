@@ -62,7 +62,7 @@ async fn get_weather(api_key: &str, lat: f64, lon: f64) {
 }
 
 #[tokio::main]
-async fn weathermain() {
+async pub fn weathermain() {
     let config_content = fs::read_to_string("config.json").expect("Unable to read config.json");
     let config: Config = serde_json::from_str(&config_content).expect("Error parsing config.json");
 
