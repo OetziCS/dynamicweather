@@ -3,7 +3,7 @@ extern crate actix_web;
 
 use std::{env, io};
 use actix_web::{middleware, web, App, HttpServer, HttpResponse};
-use crate::weather::{get_current_weather, WeatherInfo};
+use crate::weather::{get_current_weather, WeatherInfo, weathermain};
 
 mod weather;
 
@@ -30,6 +30,10 @@ async fn main() -> io::Result<()> {
         })
     .bind("0.0.0.0:9050")?
     .run()
-    .await
+    .await?;
+
+    weathermain();
+
+    Ok(())
 }
 
