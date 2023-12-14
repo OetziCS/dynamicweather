@@ -31,38 +31,33 @@ pub fn get_current_weather() -> Option<WeatherInfo> {
 }
 
 // Function to fetch the API
-async fn get_weather(api_key: &str, lat: f64, lon: f64) -> Result<(), reqwest::Error> {
+async fn get_weather(api_key: &str, lat: f64, lon: f64) {
     let url = format!(
         "https://api.openweathermap.org/data/3.0/onecall?lat={}&lon={}&appid={}",
         lat, lon, api_key
     );
 
-    let response = reqwest::get(url).await?;
-    let weather_data_1 = response.text().await?;
-    
-    let weather_data: Result<serde_json::Value, serde_json::Error> = serde_json::from_str(&weather_data_1);
-    let weather_data = match weather_data {
-        Ok(data) => data,
-        Err(err) => return Err(reqwest::Error::from(err)),
-    };
+    if let Ok(response) = reqwest::get(&url).await {
+        if let Ok(weather_data_1) = response.text().await {
+            if let Ok(weather_data) = serde_json::from_str::<Value>(&weather_data_1) {
+                // Extract weather information
+                let weather_info = WeatherInfo {
+                    main: weather_data["current"]["weather"][0]["main"]
+                        .as_str()
+                        .unwrap_or_default()
+                        .to_string(),
+                    description: weather_data["current"]["weather"][0]["description"]
+                        .as_str()
+                        .unwrap_or_default()
+                        .to_string(),
+                };
 
-    // Extract weather information
-    let weather_info = WeatherInfo {
-        main: weather_data["current"]["weather"][0]["main"]
-            .as_str()
-            .unwrap_or_default()
-            .to_string(),
-        description: weather_data["current"]["weather"][0]["description"]
-            .as_str()
-            .unwrap_or_default()
-            .to_string(),
-    };
-
-    // (Print and) write weather information to the specified file
-    //println!("{:#?}", weather_info);
-    *WEATHER_INFO.lock().unwrap() = Some(weather_info);
-
-    Ok(())
+                // (Print and) write weather information to the specified file
+                // println!("{:#?}", weather_info);
+                *WEATHER_INFO.lock().unwrap() = Some(weather_info);
+            }
+        }
+    }
 }
 
 #[tokio::main]
@@ -73,10 +68,7 @@ async fn main() {
     let interval_duration = Duration::from_secs_f64(config.weather_check_interval * 60.0); // Convert minutes to seconds
 
     loop {
-        match get_weather(&config.api_key, config.latitude, config.longitude).await {
-            Ok(_) => println!("Weather data fetched successfully."),
-            Err(err) => eprintln!("Error fetching weather data: {:?}", err),
-        }
+        get_weather(&config.api_key, config.latitude, config.longitude).await
 
         // Sleep for the specified interval
         thread::sleep(interval_duration);
