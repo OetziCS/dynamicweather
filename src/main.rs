@@ -1,9 +1,8 @@
-#[macro_use]
 extern crate actix_web;
 
 use std::{env, io};
 use actix_web::{middleware, web, App, HttpServer, HttpResponse};
-use crate::weather::{get_current_weather, WeatherInfo, weathermain};
+use crate::weather::{get_current_weather, weathermain};
 
 mod weather;
 

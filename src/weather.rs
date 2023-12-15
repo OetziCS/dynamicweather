@@ -1,4 +1,4 @@
-use reqwest::blocking::Client;
+use reqwest::Client;
 use serde::Deserialize;
 use serde_json::Value;
 use once_cell::sync::Lazy;
@@ -21,7 +21,6 @@ struct Config {
    longitude: f64,
    api_key: String,
    weather_check_interval: f64,
-   output_file: String,
 }
 
 pub static WEATHER_INFO: Lazy<Arc<Mutex<Option<WeatherInfo>>>> = Lazy::new(|| Arc::new(Mutex::new(None)));
