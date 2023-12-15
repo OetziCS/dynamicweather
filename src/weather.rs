@@ -1,4 +1,4 @@
-use reqwest::Client;
+use reqwest;
 use serde::Deserialize;
 use serde_json::Value;
 use once_cell::sync::Lazy;
