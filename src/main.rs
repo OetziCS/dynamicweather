@@ -19,19 +19,27 @@ async fn index() -> HttpResponse {
 
 #[tokio::main]
 async fn main() -> io::Result<()> {
+    let weather_task = tokio::spawn(weathermain());
+
     env::set_var("RUST_LOG", "actix_web=debug,actix_server=info");
     env_logger::init();
 
-    HttpServer::new(|| {
+    let server = HttpServer::new(|| {
         App::new()
           .wrap(middleware::Logger::default())
           .service(web::resource("/").route(web::get().to(index)))
         })
     .bind("0.0.0.0:9050")?
-    .run()
-    .await?;
+    .run();
 
-    weathermain();
+    tokio::select! {
+        _ = server => (),
+        result = weather_task => {
+            if let Err(e) = result {
+                eprintln!("Error in weathermain: {:?}", e);
+            }
+        }
+    }
 
     Ok(())
 }

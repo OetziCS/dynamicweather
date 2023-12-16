@@ -4,7 +4,7 @@ use serde_json::Value;
 use once_cell::sync::Lazy;
 use std::sync::{Arc, Mutex};
 use std::fs;
-use std::thread;
+//use std::thread;
 use std::time::Duration;
 
 // structure weather information
@@ -60,9 +60,9 @@ async fn get_weather(api_key: &str, lat: f64, lon: f64) {
     }
 }
 
-#[tokio::main]
+//#[tokio::main]
 pub async fn weathermain() {
-    let config_content = fs::read_to_string("config.json").expect("Unable to read config.json");
+    let config_content = fs::read_to_string("src/config.json").expect("Unable to read config.json");
     let config: Config = serde_json::from_str(&config_content).expect("Error parsing config.json");
 
     let interval_duration = Duration::from_secs_f64(config.weather_check_interval * 60.0); // Convert minutes to seconds
@@ -71,6 +71,6 @@ pub async fn weathermain() {
         get_weather(&config.api_key, config.latitude, config.longitude).await;
 
         // Sleep for the specified interval
-        thread::sleep(interval_duration);
+        tokio::time::sleep(interval_duration).await;
     }
 }
