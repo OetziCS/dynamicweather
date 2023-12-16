@@ -2,18 +2,35 @@ extern crate actix_web;
 
 use std::{env, io};
 use actix_web::{middleware, web, App, HttpServer, HttpResponse};
+use serde::Serialize;
 use crate::weather::{get_current_weather, weathermain};
 
 mod weather;
 
+#[derive(Serialize)]
+struct WeatherInfoResponse {
+    status: i32,
+    main: String,
+    description: String,
+}
+
 async fn index() -> HttpResponse {
     if let Some(weather_info) = get_current_weather() {
-        HttpResponse::Ok().body(format!(
-            "Current Weather: Main - {}, Description - {}",
-            weather_info.main, weather_info.description
-        ))
+        let json_response = WeatherInfoResponse {
+            status: 200,
+            main: weather_info.main,
+            description: weather_info.description,
+        };
+
+        HttpResponse::Ok().json(json_response)
     } else {
-        HttpResponse::NotFound().body("Weather information not available yet.")
+        let error_response = WeatherInfoResponse {
+            status: 404,
+            main: "null".to_string(),
+            description: "null".to_string(),
+        };
+
+        HttpResponse::NotFound().json(error_response)
     }
 }
 
